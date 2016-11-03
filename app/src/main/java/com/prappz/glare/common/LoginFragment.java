@@ -1,4 +1,4 @@
-package com.prappz.glare;
+package com.prappz.glare.common;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +25,8 @@ import com.facebook.accountkit.ui.LoginType;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+import com.prappz.glare.user.HomeFragment;
+import com.prappz.glare.R;
 
 /**
  * Created by root on 2/11/16.

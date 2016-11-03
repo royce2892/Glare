@@ -1,4 +1,4 @@
-package com.prappz.glare;
+package com.prappz.glare.user;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.prappz.glare.R;
 
 /**
  * Created by Royce RB on 2/11/16.

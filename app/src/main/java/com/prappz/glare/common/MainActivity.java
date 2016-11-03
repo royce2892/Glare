@@ -1,4 +1,4 @@
-package com.prappz.glare;
+package com.prappz.glare.common;
 
 import android.Manifest;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.prappz.glare.user.HomeFragment;
+import com.prappz.glare.R;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 

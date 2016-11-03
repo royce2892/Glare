@@ -1,4 +1,4 @@
-package com.prappz.glare;
+package com.prappz.glare.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;

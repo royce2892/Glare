@@ -1,4 +1,4 @@
-package com.prappz.glare;
+package com.prappz.glare.common;
 
 /**
  * Created by root on 2/11/16.

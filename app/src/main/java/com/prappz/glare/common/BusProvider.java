@@ -1,4 +1,4 @@
-package com.prappz.glare;
+package com.prappz.glare.common;
 
 import com.squareup.otto.Bus;
 
