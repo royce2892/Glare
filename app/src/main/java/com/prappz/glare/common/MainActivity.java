@@ -16,7 +16,9 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.prappz.glare.user.HomeFragment;
+import com.prappz.glare.admin.AdminHomeFragment;
+import com.prappz.glare.driver.DriverHomeFragment;
+import com.prappz.glare.user.UserHomeFragment;
 import com.prappz.glare.R;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -28,11 +30,32 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (PreferenceManager.getInstance(this).getBoolean(AppConstants.PARSE_LOGGED_IN))
-            getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new HomeFragment()).commit();
-        else
+        if (!PreferenceManager.getInstance(this).getBoolean(AppConstants.TYPE_CHOSEN))
+            getSupportFragmentManager().beginTransaction().add(R.id.frame, new TypeChooseFragment()).commit();
+        else if (!PreferenceManager.getInstance(this).getBoolean(AppConstants.PHONE_LOGGED_IN))
             getSupportFragmentManager().beginTransaction().add(R.id.frame, new LoginFragment()).commit();
+        else {
+            switch (PreferenceManager.getInstance(this).getInt(AppConstants.TYPE)) {
+                case AppConstants.MODE_USER:
+                    getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new UserHomeFragment()).commit();
+                    connectLocation();
+                    break;
 
+                case AppConstants.MODE_ADMIN:
+                    getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new AdminHomeFragment()).commit();
+                    break;
+
+                case AppConstants.MODE_DRIVER:
+                    getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new DriverHomeFragment()).commit();
+                    connectLocation();
+                    break;
+            }
+
+        }
+
+    }
+
+    private void connectLocation() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -43,17 +66,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 49);
         else
             mGoogleApiClient.connect();
-
     }
 
 
     protected void onStart() {
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
         super.onStart();
     }
 
     protected void onStop() {
-        mGoogleApiClient.disconnect();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.disconnect();
         super.onStop();
     }
 
@@ -93,18 +117,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
             return;
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {
-            Log.i("RESP",String.valueOf(mLastLocation.getLatitude()));
-            Log.i("RESP",String.valueOf(mLastLocation.getLongitude()));
-            PreferenceManager.getInstance(this).put(AppConstants.USER_LAT,String.valueOf(mLastLocation.getLatitude()));
-            PreferenceManager.getInstance(this).put(AppConstants.USER_LON,String.valueOf(mLastLocation.getLongitude()));
+            Log.i("RESP", String.valueOf(mLastLocation.getLatitude()));
+            Log.i("RESP", String.valueOf(mLastLocation.getLongitude()));
+            PreferenceManager.getInstance(this).put(AppConstants.USER_LAT, String.valueOf(mLastLocation.getLatitude()));
+            PreferenceManager.getInstance(this).put(AppConstants.USER_LON, String.valueOf(mLastLocation.getLongitude()));
         } else
-            Log.i("RESP","NULL");
+            Log.i("RESP", "NULL");
 
 
     }
@@ -122,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        if(getSupportFragmentManager().getBackStackEntryCount()!=1)
+        if (getSupportFragmentManager().getBackStackEntryCount() != 1)
             getSupportFragmentManager().popBackStack();
         else {
             this.finish();

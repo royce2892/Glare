@@ -1,6 +1,7 @@
 package com.prappz.glare.common;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,10 +23,13 @@ import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
+import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-import com.prappz.glare.user.HomeFragment;
+import com.prappz.glare.admin.AdminHomeFragment;
+import com.prappz.glare.driver.DriverHomeFragment;
+import com.prappz.glare.user.UserHomeFragment;
 import com.prappz.glare.R;
 
 /**
@@ -39,6 +43,7 @@ public class LoginFragment extends Fragment {
     private EditText name;
     private String phoneNumber;
     private ProgressBar progressBar;
+    private String id, prefix;
 
     public LoginFragment() {
     }
@@ -77,30 +82,68 @@ public class LoginFragment extends Fragment {
 
     private void createUser() {
 
+        switch (PreferenceManager.getInstance(getContext()).getInt(AppConstants.TYPE)) {
+
+            case AppConstants.MODE_ADMIN:
+                prefix = "a";
+                break;
+            case AppConstants.MODE_DRIVER:
+                prefix = "d";
+                break;
+            default:
+                prefix = "u";
+                break;
+        }
         progressBar.setVisibility(View.VISIBLE);
         ParseUser user = new ParseUser();
-        user.setUsername("u" + phoneNumber);
-        user.setPassword("u" + phoneNumber);
+        id = prefix + phoneNumber;
+        user.setUsername(id);
+        user.setPassword(id);
         user.put("phone", phoneNumber);
-        user.put("name",name.getText().toString());
+        user.put("name", name.getText().toString());
         user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
-                if(e==null) {
+                if (e == null) {
                     skipToHome();
                 } else {
                     progressBar.setVisibility(View.GONE);
                     showToast(e.getLocalizedMessage());
+                    if (e.getCode() == ParseException.USERNAME_TAKEN)
+                        loginUser();
+                }
+            }
+        });
+    }
+
+    private void loginUser() {
+        progressBar.setVisibility(View.VISIBLE);
+        ParseUser.logInInBackground(id, id, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException e) {
+                if (e == null)
+                    skipToHome();
+                else {
+                    progressBar.setVisibility(View.GONE);
+                    showToast(e.getLocalizedMessage());
+
                 }
             }
         });
     }
 
     private void skipToHome() {
-        PreferenceManager.getInstance(getContext()).put(AppConstants.USER_NAME,name.getText().toString());
-        PreferenceManager.getInstance(getContext()).put(AppConstants.USER_ID,"u"+phoneNumber);
-        PreferenceManager.getInstance(getContext()).put(AppConstants.PARSE_LOGGED_IN,true);
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,new HomeFragment()).commit();
+        progressBar.setVisibility(View.GONE);
+        PreferenceManager.getInstance(getContext()).put(AppConstants.USER_NAME, name.getText().toString());
+        PreferenceManager.getInstance(getContext()).put(AppConstants.USER_ID, id);
+        PreferenceManager.getInstance(getContext()).put(AppConstants.PARSE_LOGGED_IN, true);
+        if (prefix.contentEquals("u"))
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new UserHomeFragment()).commit();
+        else if (prefix.contentEquals("d"))
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new DriverHomeFragment()).commit();
+        else
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new AdminHomeFragment()).commit();
+
 
     }
 
@@ -143,9 +186,14 @@ public class LoginFragment extends Fragment {
                 // String accountKitId = account.getId();
 
                 // Get phone number
-                phoneNumber = account.getPhoneNumber().toString();
-                PreferenceManager.getInstance(getContext()).put(AppConstants.USER_PHONE,phoneNumber);
-                showViews();
+                try {
+
+                    phoneNumber = account.getPhoneNumber().toString();
+                    PreferenceManager.getInstance(getContext()).put(AppConstants.USER_PHONE, phoneNumber);
+                    showViews();
+                } catch (NullPointerException ex) {
+                    Log.i("RESP",ex.getLocalizedMessage());
+                }
             }
 
             @Override

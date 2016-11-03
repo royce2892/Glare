@@ -6,6 +6,9 @@ package com.prappz.glare.common;
 
 public class AppConstants {
 
+
+    public static final String TYPE_CHOSEN = "type_chosen";
+    public static final String TYPE = "type";
     public static final String PHONE_LOGGED_IN = "phone";
     public static final String PARSE_LOGGED_IN = "parse";
     public static final String USER_PHONE = "up";
@@ -18,6 +21,9 @@ public class AppConstants {
     public static final int GLARE_FIRE = 1;
     public static final int GLARE_POLICE = 2;
 
+    public static final int MODE_USER = 0;
+    public static final int MODE_DRIVER = 1;
+    public static final int MODE_ADMIN = 2;
 
 
 }

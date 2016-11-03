@@ -13,9 +13,9 @@ import com.prappz.glare.R;
  * Created by Royce RB on 2/11/16.
  */
 
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class UserHomeFragment extends Fragment implements View.OnClickListener {
 
-    public HomeFragment() {
+    public UserHomeFragment() {
     }
 
     @Nullable
