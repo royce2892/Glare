@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="11"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/glare_amb"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="3"
+        android:scaleType="fitEnd"
+        android:src="@drawable/ambulance"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/glare_pol"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/police"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/glare_fire"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="3"
+        android:scaleType="centerCrop"
+        android:src="@drawable/fire"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/volunteer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="I'm a volunteer"
+        android:textSize="48sp" />
+
+</LinearLayout>

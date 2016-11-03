@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <ImageView
+            android:id="@+id/glare_pic"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:layout_weight="6"
+            android:padding="16dp"
+            android:src="@android:drawable/ic_menu_camera"
+            tools:ignore="ContentDescription" />
+
+        <EditText
+            android:id="@+id/glare_desc"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:gravity="start|top"
+            android:hint="@string/glare_desc_hint"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/glare_submit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/com_accountkit_button_submit"
+            android:textColor="#fff"
+            android:textSize="28sp" />
+
+
+    </LinearLayout>
+
+    <include layout="@layout/progress_view_layout" />
+
+
+</RelativeLayout>
