@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.prappz.glare.admin.AdminGlareListFragment;
 import com.prappz.glare.admin.AdminHomeFragment;
 import com.prappz.glare.driver.DriverHomeFragment;
 import com.prappz.glare.user.UserHomeFragment;
@@ -39,15 +40,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 case AppConstants.MODE_USER:
                     getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new UserHomeFragment()).commit();
                     connectLocation();
+                    if (getSupportActionBar() != null)
+                        getSupportActionBar().setTitle("Glare : USER");
                     break;
 
                 case AppConstants.MODE_ADMIN:
                     getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new AdminHomeFragment()).commit();
+                    if (getSupportActionBar() != null)
+                        getSupportActionBar().setTitle("Glare : ADMIN");
                     break;
 
                 case AppConstants.MODE_DRIVER:
                     getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new DriverHomeFragment()).commit();
                     connectLocation();
+                    if (getSupportActionBar() != null)
+                        getSupportActionBar().setTitle("Glare : DRIVER");
                     break;
             }
 

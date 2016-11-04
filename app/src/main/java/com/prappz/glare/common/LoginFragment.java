@@ -1,7 +1,6 @@
 package com.prappz.glare.common;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,7 +26,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-import com.prappz.glare.admin.AdminHomeFragment;
+import com.prappz.glare.admin.AdminGlareListFragment;
 import com.prappz.glare.driver.DriverHomeFragment;
 import com.prappz.glare.user.UserHomeFragment;
 import com.prappz.glare.R;
@@ -142,7 +141,7 @@ public class LoginFragment extends Fragment {
         else if (prefix.contentEquals("d"))
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new DriverHomeFragment()).commit();
         else
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new AdminHomeFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame, new AdminGlareListFragment()).commit();
 
 
     }

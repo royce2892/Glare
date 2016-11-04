@@ -21,7 +21,7 @@ public class UserHomeFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_home,container,false);
+        return inflater.inflate(R.layout.frag_home, container, false);
     }
 
     @Override
@@ -31,21 +31,17 @@ public class UserHomeFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.glare_amb).setOnClickListener(this);
         view.findViewById(R.id.glare_pol).setOnClickListener(this);
         view.findViewById(R.id.glare_fire).setOnClickListener(this);
-        view.findViewById(R.id.volunteer).setOnClickListener(this);
 
 
     }
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.volunteer) {
-            //TODO
-        } else {
-            Fragment fragment = new GlareFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("id",view.getId());
-            fragment.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("stack").replace(R.id.frame,fragment).commit();
-        }
+
+        Fragment fragment = new GlareFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", view.getId());
+        fragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("stack").replace(R.id.frame, fragment).commit();
     }
 }

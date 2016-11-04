@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 import com.prappz.glare.R;
@@ -101,12 +102,16 @@ public class GlareFragment extends Fragment {
     private void saveGlare(ParseFile file) {
         ParseObject glare = ParseObject.create("Glare");
         glare.put("info", mInfo.getText().toString());
+        Double lat,lon;
         if (file != null)
             glare.put("image", file);
         glare.put("phone", PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_PHONE));
         glare.put("name", PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_NAME));
         glare.put("lat",PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_LAT));
         glare.put("lon",PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_LON));
+
+        lat = Double.parseDouble(glare.getString("lat"));
+        lon = Double.parseDouble(glare.getString("lon"));
 
         if(getArguments().getInt("id") == R.id.glare_amb)
             glare.put("type", AppConstants.GLARE_AMBULANCE);
@@ -115,6 +120,8 @@ public class GlareFragment extends Fragment {
         else
             glare.put("type", AppConstants.GLARE_POLICE);
 
+        glare.put("location",new ParseGeoPoint(lat,lon));
+        glare.put("status",AppConstants.STATUS_PENDING);
         glare.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

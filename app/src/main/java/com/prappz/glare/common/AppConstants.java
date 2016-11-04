@@ -25,5 +25,10 @@ public class AppConstants {
     public static final int MODE_DRIVER = 1;
     public static final int MODE_ADMIN = 2;
 
+    public static final int STATUS_PENDING = 0;
+    public static final int STATUS_ASSIGNED = 1;
+    public static final int STATUS_COMPLETED = 2;
+
+
 
 }
