@@ -14,9 +14,11 @@ import android.widget.TextView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SendCallback;
 import com.prappz.glare.R;
 
@@ -112,8 +114,7 @@ public class NearbyDriversFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Log.i("RESP", "LOCATION " + users.get(position).getParseGeoPoint("location").toString());
-
-                        sendDriverPush(users.get(position));
+                        createAmbulanceRequest(users.get(position));
                     }
                 });
 
@@ -121,12 +122,29 @@ public class NearbyDriversFragment extends Fragment {
         }
     }
 
-    private void sendDriverPush(ParseUser user) {
+    private void createAmbulanceRequest(final ParseUser parseUser) {
+        final ParseObject ambrequest = ParseObject.create("AmbulanceRequest");
+        ambrequest.put("location", victim);
+        ambrequest.put("glareId", getArguments().getString("id"));
+        ambrequest.put("hasAccepted", false);
+        ambrequest.put("driver", parseUser);
+        ambrequest.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null)
+                    sendDriverPush(parseUser, ambrequest.getObjectId());
+            }
+        });
+    }
+
+    private void sendDriverPush(ParseUser user, String ambRequestId) {
         ParsePush parsePush = new ParsePush();
-        parsePush.setChannel(user.getUsername().replace("+",""));
+        parsePush.setChannel(user.getUsername().replace("+", ""));
         JSONObject json = new JSONObject();
         try {
-            json.put("from", "Royce Raju");
+            //o for ambulance request
+            json.put("type", 0);
+            json.put("id", ambRequestId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

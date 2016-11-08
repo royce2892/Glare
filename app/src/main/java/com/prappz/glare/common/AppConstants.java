@@ -29,6 +29,12 @@ public class AppConstants {
     public static final int STATUS_ASSIGNED = 1;
     public static final int STATUS_COMPLETED = 2;
 
+    public static final int R_ASSIGN_AMBULANCE = 0;
+    public static final int R_AMBULANCE_ACCEPT = 1;
+    public static final int R_AMBULANCE_REJECT = 2;
+    public static final int R_AMBULANCE_COMPLETED = 3;
+    public static final int R_AMBULANCE_BUSY = 4;
+    public static final int R_AMBULANCE_AVAILABLE = 5;
 
 
 }

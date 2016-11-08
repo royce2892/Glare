@@ -1,40 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/driver_home"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Glare:Admin"
-            android:textSize="18sp"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:textColor="@color/white" />
-    </android.support.v7.widget.Toolbar>
-
-    <TextView
-        android:id="@+id/label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+    <ImageView
+        android:id="@+id/glare_img"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
         android:layout_margin="16dp"
-        android:text="You have a new emergency ride task"
-        android:textSize="20sp" />
+        android:src="@drawable/ambulance" />
 
     <Button
         android:id="@+id/accept"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/label"
-        android:layout_marginLeft="16dp"
+        android:layout_height="64dp"
+        android:layout_toRightOf="@+id/glare_img"
         android:background="@color/colorPrimary"
         android:padding="16dp"
         android:text="@string/accept"
@@ -44,10 +24,9 @@
     <Button
         android:id="@+id/reject"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/label"
-        android:layout_marginRight="16dp"
+        android:layout_height="64dp"
+        android:layout_below="@+id/accept"
+        android:layout_toRightOf="@+id/glare_img"
         android:background="@color/red"
         android:padding="16dp"
         android:text="REJECT"
@@ -56,7 +35,7 @@
 
     <TextView
         android:id="@+id/call_admin"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/reject"
         android:layout_margin="16dp"
@@ -65,9 +44,10 @@
 
     <TextView
         android:id="@+id/call_user"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/call_admin"
+        android:layout_below="@+id/reject"
+        android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:text="Call user"
         android:textSize="20sp" />
@@ -77,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/call_user"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
         android:text="Glare text"
         android:textSize="20sp" />
 
@@ -86,17 +66,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/glare_text"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
         android:text="Royce Raju"
         android:textSize="20sp" />
-
-    <ImageView
-        android:id="@+id/glare_img"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/glare_name"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ambulance" />
 
 
 </RelativeLayout>

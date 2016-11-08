@@ -31,6 +31,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.getBoolean("FROMNOTIF", false)) {
+                if (bundle.getInt("type") == 0) {
+                    DriverHomeFragment driverHomeFragment = new DriverHomeFragment();
+                    driverHomeFragment.setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, driverHomeFragment).commit();
+
+                }
+                return;
+            }
+        }
         if (!PreferenceManager.getInstance(this).getBoolean(AppConstants.TYPE_CHOSEN))
             getSupportFragmentManager().beginTransaction().add(R.id.frame, new TypeChooseFragment()).commit();
         else if (!PreferenceManager.getInstance(this).getBoolean(AppConstants.PHONE_LOGGED_IN))

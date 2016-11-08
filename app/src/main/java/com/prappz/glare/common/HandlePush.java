@@ -38,16 +38,8 @@ public class HandlePush extends ParsePushBroadcastReceiver {
         try {
             int type = json.getInt("type");
             //0 for ride request
-            if (type == 0) {
-                // String content = json.getString("seats");
-                String from = json.getString("from");
-               /* String source = json.getString("source");
-                String desti = json.getString("desti");
-                String url = json.getString("url");
-                String id = json.getString("id");*/
-                //   createRequest(id, from, type, url, source, desti,content,json.getString("phone"));
-
-                generate_notification(context, from + " sent a seat share request");
+            if (type == AppConstants.R_ASSIGN_AMBULANCE) {
+                generate_message_notification(context, "You have a new emergency situation to handle with!!!", json.getString("id"), json.getInt("type"));
             }
             //1 for accept
             else if (type == 1) {
@@ -74,7 +66,7 @@ public class HandlePush extends ParsePushBroadcastReceiver {
             } else if (type == 3) {
                 String from = json.getString("from");
                 String id = json.getString("id");
-                generate_message_notification(context, from + " sent you a new message", from, id);
+                //generate_message_notification(context, from + " sent you a new message", from, id);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -100,13 +92,13 @@ public class HandlePush extends ParsePushBroadcastReceiver {
         manager.notify(0, notif);
     }
 
-    private void generate_message_notification(Context context, String content, String from, String id) throws JSONException {
+    private void generate_message_notification(Context context, String content, String id, int type) throws JSONException {
         try {
 
 
             Intent i = new Intent(context, MainActivity.class);
             i.putExtra("id", id);
-            i.putExtra("name", from);
+            i.putExtra("type", type);
             i.putExtra("FROMNOTIF", true);
             PendingIntent pintent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
