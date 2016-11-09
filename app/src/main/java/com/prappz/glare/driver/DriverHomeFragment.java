@@ -21,6 +21,7 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.prappz.glare.R;
 import com.prappz.glare.common.AppConstants;
+import com.prappz.glare.common.PreferenceManager;
 
 /**
  * Created by Royce RB on 3/11/16.
@@ -60,8 +61,16 @@ public class DriverHomeFragment extends Fragment implements View.OnClickListener
         if (getArguments() != null) {
             if (getArguments().getBoolean("FROMNOTIF", false)) {
                 id = getArguments().getString("id");
-                if (id != null)
+                if (id != null) {
                     getRequestData();
+                    PreferenceManager.getInstance(getContext()).put(AppConstants.AMB_REQUEST_ID, id);
+                } else {
+                    if (!PreferenceManager.getInstance(getContext()).getString(AppConstants.AMB_REQUEST_ID).contentEquals("")) {
+                        id = PreferenceManager.getInstance(getContext()).getString(AppConstants.AMB_REQUEST_ID);
+                        getRequestData();
+                    }
+                }
+
             }
         }
 
@@ -121,8 +130,7 @@ public class DriverHomeFragment extends Fragment implements View.OnClickListener
                     if (e == null) {
                         updateGlareObject(accept);
                         Log.i("RESP", "ambulance updated");
-                    }
-                    else
+                    } else
                         Log.i("RESP", "save amb request " + e.getLocalizedMessage());
                 }
             });

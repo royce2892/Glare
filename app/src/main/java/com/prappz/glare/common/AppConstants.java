@@ -17,6 +17,8 @@ public class AppConstants {
     public static final String USER_LAT = "lat";
     public static final String USER_LON = "lon";
 
+    public static final String AMB_REQUEST_ID = "ambReqId";
+
     public static final int GLARE_AMBULANCE = 0;
     public static final int GLARE_FIRE = 1;
     public static final int GLARE_POLICE = 2;
