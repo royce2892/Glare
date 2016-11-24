@@ -13,63 +13,75 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Glare:Admin"
-            android:textSize="18sp"
+            android:text="Glare : Driver"
             android:textAllCaps="true"
-            android:textStyle="bold"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/label"
+    <ImageView
+        android:id="@+id/glare_img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="320dp"
         android:layout_below="@+id/toolbar"
-        android:layout_margin="16dp"
-        android:text="You have a new emergency ride task"
-        android:textSize="20sp" />
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ambulance" />
 
-    <Button
-        android:id="@+id/accept"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/label"
+        android:layout_below="@+id/glare_img"
+        android:id="@+id/resp_layout"
+        android:layout_margin="16dp">
+
+        <Button
+            android:id="@+id/accept"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:padding="16dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/accept"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/reject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/red"
+            android:padding="16dp"
+            android:layout_marginLeft="8dp"
+            android:text="REJECT"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/glare_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/resp_layout"
         android:layout_marginLeft="16dp"
-        android:background="@color/colorPrimary"
-        android:padding="16dp"
-        android:text="@string/accept"
-        android:textColor="@color/white"
-        android:textSize="24sp" />
-
-    <Button
-        android:id="@+id/reject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/label"
-        android:layout_marginRight="16dp"
-        android:background="@color/red"
-        android:padding="16dp"
-        android:text="REJECT"
-        android:textColor="@color/white"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/call_admin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/reject"
-        android:layout_margin="16dp"
-        android:text="Call admin"
+        android:text="Reported by Royce Raju"
         android:textSize="20sp" />
 
-    <TextView
+    <ImageView
         android:id="@+id/call_user"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_call_green"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/call_admin"
-        android:layout_margin="16dp"
-        android:text="Call user"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/resp_layout"
+        android:layout_marginRight="4dp"
         android:textSize="20sp" />
 
     <TextView
@@ -79,24 +91,8 @@
         android:layout_below="@+id/call_user"
         android:layout_margin="16dp"
         android:text="Glare text"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/glare_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/glare_text"
-        android:layout_margin="16dp"
-        android:text="Royce Raju"
-        android:textSize="20sp" />
-
-    <ImageView
-        android:id="@+id/glare_img"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_below="@+id/glare_name"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ambulance" />
-
+    <include layout="@layout/progress_view_layout"/>
 
 </RelativeLayout>

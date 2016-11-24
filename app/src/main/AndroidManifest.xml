@@ -18,21 +18,26 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="com.prappz.glare.permission.MAPS_RECEIVE" />
+
+
     <permission
         android:name="com.prappz.glare.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.prappz.glare.permission.C2D_MESSAGE" />
 
     <application
+        android:name=".common.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".common.App"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".common.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -40,19 +45,17 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.facebook.accountkit.ApplicationName"
             android:value="@string/app_name" />
-
         <meta-data
             android:name="com.facebook.accountkit.ClientToken"
             android:value="@string/account_kit_token" />
 
         <activity
             android:name="com.facebook.accountkit.ui.AccountKitActivity"
-            android:theme="@style/LoginTheme"
             android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme"
             tools:replace="android:theme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -83,7 +86,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.prappz.glare.common.HandlePush"
+            android:name=".common.HandlePush"
             android:exported="false"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
@@ -93,6 +96,13 @@
             </intent-filter>
         </receiver>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".common.MapsActivity"
+            android:label="@string/title_activity_maps"/>
     </application>
 
 </manifest>

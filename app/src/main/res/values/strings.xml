@@ -7,4 +7,5 @@
     <string name="facebook_app_id">1742834169371460</string>
     <string name="account_kit_token">342159ceb43da3e4e6434c06724f8924</string>
     <string name="ak_login_protocol_scheme">ak1742834169371460</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

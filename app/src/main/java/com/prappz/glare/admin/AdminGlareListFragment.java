@@ -21,6 +21,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.prappz.glare.R;
+import com.prappz.glare.common.AppConstants;
 
 import java.util.List;
 import java.util.Locale;
@@ -33,7 +34,6 @@ public class AdminGlareListFragment extends Fragment {
 
     private RecyclerView mGlareList;
     private List<ParseObject> glares;
-    private int status = 0;
 
     public AdminGlareListFragment() {
     }
@@ -48,7 +48,7 @@ public class AdminGlareListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        status = getArguments().getInt("status");
+        //status = getArguments().getInt("status");
         mGlareList = (RecyclerView) view.findViewById(R.id.glare_list);
         mGlareList.setLayoutManager(new LinearLayoutManager(getContext()));
         if (glares == null || glares.size() == 0) {
@@ -87,9 +87,13 @@ public class AdminGlareListFragment extends Fragment {
             holder.position = position;
             ParseObject glare = glares.get(position);
             holder.name.setText(glare.getString("name"));
-            holder.phone.setText(glare.getString("phone"));
-            if (glare.getString("info") != null)
-                holder.info.setText(glare.getString("info"));
+         //   holder.phone.setText(glare.getString("phone"));
+            if (glare.getInt("type") == AppConstants.GLARE_AMBULANCE)
+                holder.type.setText("Ambulance");
+            else if (glare.getInt("type") == AppConstants.GLARE_FIRE)
+                holder.type.setText("Fire");
+            else if (glare.getInt("type") == AppConstants.GLARE_POLICE)
+                holder.type.setText("Police");
             if (glare.getParseFile("image") != null)
                 Glide.with(getContext()).load(glare.getParseFile("image").getUrl()).thumbnail(0.1f).into(holder.image);
 
@@ -104,14 +108,13 @@ public class AdminGlareListFragment extends Fragment {
 
             int position;
             ImageView image;
-            TextView name, phone, info, status;
+            TextView name, type;
 
             private Holder(View itemView) {
                 super(itemView);
                 image = (ImageView) itemView.findViewById(R.id.glare_image);
                 name = (TextView) itemView.findViewById(R.id.glare_name);
-                phone = (TextView) itemView.findViewById(R.id.glare_number);
-                info = (TextView) itemView.findViewById(R.id.glare_info);
+                type = (TextView) itemView.findViewById(R.id.glare_type);
                // status = (TextView) itemView.findViewById(R.id.glare_status);
 
                 itemView.findViewById(R.id.glare_location).setOnClickListener(new View.OnClickListener() {

@@ -2,6 +2,7 @@ package com.prappz.glare.common;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -15,8 +16,14 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.prappz.glare.admin.AdminGlareListFragment;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.prappz.glare.admin.AdminHomeFragment;
 import com.prappz.glare.driver.DriverHomeFragment;
 import com.prappz.glare.user.UserHomeFragment;
@@ -52,21 +59,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 case AppConstants.MODE_USER:
                     getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new UserHomeFragment()).commit();
                     connectLocation();
-                    if (getSupportActionBar() != null)
-                        getSupportActionBar().setTitle("Glare : USER");
                     break;
 
                 case AppConstants.MODE_ADMIN:
                     getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new AdminHomeFragment()).commit();
-                    if (getSupportActionBar() != null)
-                        getSupportActionBar().setTitle("Glare : ADMIN");
                     break;
 
                 case AppConstants.MODE_DRIVER:
                     getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new DriverHomeFragment()).commit();
                     connectLocation();
-                    if (getSupportActionBar() != null)
-                        getSupportActionBar().setTitle("Glare : DRIVER");
                     break;
             }
 
@@ -91,12 +92,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onStart() {
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
+        BusProvider.getInstance().register(this);
         super.onStart();
     }
 
     protected void onStop() {
         if (mGoogleApiClient != null)
             mGoogleApiClient.disconnect();
+        BusProvider.getInstance().unregister(this);
         super.onStop();
     }
 
@@ -126,12 +129,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Log.v("CARD ", "Permission: " + permissions[0] + "was " + grantResults[0]);
             if (requestCode == 49)
                 mGoogleApiClient.connect();
+            else if(requestCode == 50)
+                BusProvider.getInstance().post(new PermissionGrantedEvent());
         } else {
             if (requestCode == 49)
                 Toast.makeText(this, "Kindly give ACCESS_FINE_LOCATION permission to the app for selecting location", Toast.LENGTH_SHORT).show();
 
         }
     }
+
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -145,9 +152,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Log.i("RESP", String.valueOf(mLastLocation.getLongitude()));
             PreferenceManager.getInstance(this).put(AppConstants.USER_LAT, String.valueOf(mLastLocation.getLatitude()));
             PreferenceManager.getInstance(this).put(AppConstants.USER_LON, String.valueOf(mLastLocation.getLongitude()));
-        } else
-            Log.i("RESP", "NULL");
-
+        } else {
+            Log.i("RESP", "NULL LOCATION ON CONNCETED");
+            displayLocationSettingsRequest();
+        }
 
     }
 
@@ -169,5 +177,50 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         else {
             this.finish();
         }
+    }
+
+    private void displayLocationSettingsRequest() {
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(LocationServices.API).build();
+        googleApiClient.connect();
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(10000 / 2);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+
+        PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(@NonNull LocationSettingsResult result) {
+                final Status status = result.getStatus();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        Log.i("RESP", "All location settings are satisfied.");
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        Log.i("RESP", "Location settings are not satisfied. Show the user a dialog to upgrade location settings ");
+
+                        try {
+                            status.startResolutionForResult(MainActivity.this, 24);
+                        } catch (IntentSender.SendIntentException e) {
+                            Log.i("RESP", "PendingIntent unable to execute request.");
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        Log.i("RESP", "Location settings are inadequate, and cannot be fixed here. Dialog not created.");
+                        takeToSettings();
+                        break;
+                }
+            }
+        });
+    }
+
+    private void takeToSettings() {
+        Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivityForResult(callGPSSettingIntent, 24);
     }
 }

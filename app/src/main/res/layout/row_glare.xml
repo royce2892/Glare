@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:layout_height="136dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp">
 
     <ImageView
         android:id="@+id/glare_image"
@@ -12,62 +14,51 @@
         android:src="@drawable/glare" />
 
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/glare_name"
-        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/glare_image"
         android:paddingLeft="16dp"
         android:text="Royce Raju"
-        android:layout_toRightOf="@+id/glare_image"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/glare_type"
         android:layout_width="wrap_content"
-        android:id="@+id/glare_number"
-        android:textSize="16sp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_above="@+id/glare_nearby_drivers"
+        android:layout_marginBottom="16dp"
+        android:layout_toRightOf="@+id/glare_image"
         android:paddingLeft="16dp"
-        android:text="+91-9972922892"
-        android:layout_toRightOf="@+id/glare_image"
-        android:layout_below="@+id/glare_name"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:id="@+id/glare_info"
+        android:text="Ambulance"
+        android:textColor="@color/colorSecondaryText"
         android:textSize="16sp"
-        android:paddingLeft="16dp"
-        android:text="Danger man spotted"
-        android:layout_toRightOf="@+id/glare_image"
-        android:layout_below="@+id/glare_number"
-        android:layout_height="wrap_content" />
+        android:textStyle="italic" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
         android:id="@+id/glare_location"
-        android:textSize="18sp"
-        android:paddingLeft="16dp"
-        android:text="View Location"
-        android:layout_toRightOf="@+id/glare_image"
-        android:layout_below="@+id/glare_info"
-        android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/ic_place_primary_color" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
         android:id="@+id/glare_nearby_drivers"
-        android:textSize="18sp"
-        android:paddingLeft="16dp"
-        android:text="View Nearby Drivers"
-        android:layout_toRightOf="@+id/glare_image"
-        android:layout_below="@+id/glare_location"
-        android:layout_height="wrap_content" />
-<!--
-    <TextView
         android:layout_width="wrap_content"
-        android:id="@+id/glare_status"
-        android:textSize="18sp"
-        android:paddingLeft="16dp"
-        android:text="Status : PENDING"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/glare_image"
+        android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/glare_image"
-        android:layout_below="@+id/glare_nearby_drivers"
-        android:layout_height="wrap_content" />-->
+        android:background="@color/wallet_holo_blue_light"
+        android:padding="8dp"
+        android:text="View Nearby Drivers"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
 
 </RelativeLayout>
