@@ -11,7 +11,9 @@ Glare for ambulance drivers helps to send the current location of ambulance in r
 <b>Source Code</b> : https://github.com/royce2892/Glare
 
 APK File attached
+
 Glare Idea Pitch Deck: https://drive.google.com/file/d/0BxdTVtHPzEHPRzlwd3NrUWF4RlE/view?usp=sharing
+
 Attached with all the screenshots of app
 
 <h2>APK Testing Instructions</h2>
