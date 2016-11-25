@@ -1,56 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:weightSum="3"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="32dp"
-        android:id="@+id/icon"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content" />
-
-    <TextView
+    <LinearLayout
+        android:id="@+id/intro"
         android:layout_width="match_parent"
-        android:id="@+id/label"
-        android:text="When in an emergency , don't just blink , start glaring!"
-        android:layout_margin="32dp"
-        android:gravity="center"
-        android:layout_below="@+id/icon"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:text="Join as an user"
-        android:layout_below="@+id/label"
-        android:textSize="32sp"
-        android:drawablePadding="8dp"
-        android:padding="16dp"
-        android:drawableLeft="@drawable/ic_person"
-        android:id="@+id/type_user"
-        android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="148dp"
+            android:layout_height="148dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="64dp"
+            android:layout_marginRight="64dp"
+            android:src="@mipmap/ic_launcher" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:text="Join as a driver"
-        android:textSize="32sp"
-        android:drawablePadding="8dp"
-        android:padding="16dp"
-        android:drawableLeft="@drawable/ic_person"
-        android:layout_below="@+id/type_user"
-        android:id="@+id/type_driver"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="40dp" />
 
-    <TextView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:text="In Emergency, don't blink, start glaring"
+            android:textColor="@color/colorSecondaryText"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:text="Join as an admin"
-        android:textSize="32sp"
-        android:drawablePadding="8dp"
-        android:padding="16dp"
-        android:drawableLeft="@drawable/ic_person"
-        android:layout_below="@+id/type_driver"
-        android:id="@+id/type_admin"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/type_user"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/sunflower">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:padding="10dp"
+                android:text="Login as an user"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/type_driver"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/carrot">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:padding="10dp"
+                android:text="Login as a driver"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/type_admin"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/nephritis">
+
+
+            <TextView
+                android:id="@+id/police_text"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:padding="10dp"
+                android:text="Login as an admin"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
 </RelativeLayout>

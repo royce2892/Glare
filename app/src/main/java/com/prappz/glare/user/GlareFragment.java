@@ -96,39 +96,40 @@ public class GlareFragment extends Fragment {
     }
 
     private void showToast(String message) {
-        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void saveGlare(ParseFile file) {
         ParseObject glare = ParseObject.create("Glare");
         glare.put("info", mInfo.getText().toString());
-        Double lat,lon;
+        Double lat, lon;
         if (file != null)
             glare.put("image", file);
         glare.put("phone", PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_PHONE));
         glare.put("name", PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_NAME));
-        glare.put("lat",PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_LAT));
-        glare.put("lon",PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_LON));
+        glare.put("lat", PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_LAT));
+        glare.put("lon", PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_LON));
 
         lat = Double.parseDouble(glare.getString("lat"));
         lon = Double.parseDouble(glare.getString("lon"));
 
-        if(getArguments().getInt("id") == R.id.glare_amb)
+        if (getArguments().getInt("id") == R.id.glare_amb)
             glare.put("type", AppConstants.GLARE_AMBULANCE);
-        else if(getArguments().getInt("id") == R.id.glare_fire)
+        else if (getArguments().getInt("id") == R.id.glare_fire)
             glare.put("type", AppConstants.GLARE_FIRE);
         else
             glare.put("type", AppConstants.GLARE_POLICE);
 
-        glare.put("location",new ParseGeoPoint(lat,lon));
-        glare.put("status",AppConstants.STATUS_PENDING);
+        glare.put("location", new ParseGeoPoint(lat, lon));
+        glare.put("status", AppConstants.STATUS_PENDING);
         glare.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 progressBar.setVisibility(View.GONE);
-                if(e==null)
+                if (e == null) {
                     showToast("Glare sent");
-                else
+                    getActivity().onBackPressed();
+                } else
                     showToast(e.getLocalizedMessage());
             }
         });
