@@ -24,6 +24,10 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.prappz.glare.admin.AdminHomeFragment;
 import com.prappz.glare.driver.DriverHomeFragment;
 import com.prappz.glare.user.UserHomeFragment;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        connectLocation();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             if (bundle.getBoolean("FROMNOTIF", false)) {
@@ -67,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 case AppConstants.MODE_DRIVER:
                     getSupportFragmentManager().beginTransaction().addToBackStack("stack").add(R.id.frame, new DriverHomeFragment()).commit();
-                    connectLocation();
                     break;
             }
 
@@ -129,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Log.v("CARD ", "Permission: " + permissions[0] + "was " + grantResults[0]);
             if (requestCode == 49)
                 mGoogleApiClient.connect();
-            else if(requestCode == 50)
+            else if (requestCode == 50)
                 BusProvider.getInstance().post(new PermissionGrantedEvent());
         } else {
             if (requestCode == 49)
@@ -137,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         }
     }
-
 
 
     @Override
@@ -152,6 +155,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Log.i("RESP", String.valueOf(mLastLocation.getLongitude()));
             PreferenceManager.getInstance(this).put(AppConstants.USER_LAT, String.valueOf(mLastLocation.getLatitude()));
             PreferenceManager.getInstance(this).put(AppConstants.USER_LON, String.valueOf(mLastLocation.getLongitude()));
+            ParseGeoPoint location = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            ParseUser.getCurrentUser().put("location", location);
+            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null)
+                        Log.i("RESP", "location of driver saved");
+                    else
+                        Log.i("RESP", e.getLocalizedMessage());
+                }
+            });
+
         } else {
             Log.i("RESP", "NULL LOCATION ON CONNCETED");
             displayLocationSettingsRequest();

@@ -1,40 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="9"
-    android:orientation="vertical">
-
-    <ImageView
-        android:id="@+id/glare_amb"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="3"
-        android:scaleType="fitEnd"
-        android:src="@drawable/ambulance"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/glare_pol"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="3"
-        android:scaleType="centerCrop"
-        android:src="@drawable/police"
-        tools:ignore="ContentDescription" />
-
-    <ImageView
-        android:id="@+id/glare_fire"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="3"
-        android:scaleType="centerCrop"
-        android:src="@drawable/fire"
-        tools:ignore="ContentDescription" />
+    android:layout_height="match_parent">
 
 
-</LinearLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Glare : User"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:weightSum="9">
+
+        <ImageView
+            android:id="@+id/glare_amb"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="3"
+            android:scaleType="fitEnd"
+            android:src="@drawable/ambulance"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/glare_pol"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="3"
+            android:scaleType="centerCrop"
+            android:src="@drawable/police"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/glare_fire"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="3"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fire"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+</RelativeLayout>

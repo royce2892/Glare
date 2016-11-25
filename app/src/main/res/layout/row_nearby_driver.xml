@@ -1,42 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_marginTop="12dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_weight="10"
+    android:orientation="horizontal"
+    android:padding="8dp">
 
     <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/driver_name"
-        android:textSize="16sp"
-        android:paddingLeft="16dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingLeft="8dp"
         android:text="Royce Raju"
-        android:layout_height="wrap_content" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:id="@+id/driver_number"
-        android:textSize="16sp"
-        android:paddingRight="16dp"
-        android:text="+91-9972922892"
-        android:layout_alignParentRight="true"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_width="wrap_content"
         android:id="@+id/driver_distance"
-        android:textSize="16sp"
-        android:paddingLeft="16dp"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/driver_name"
         android:text="40 km away"
-        android:layout_below="@+id/driver_name"
-        android:layout_height="wrap_content" />
+        android:textSize="14sp"
+        android:textStyle="italic" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/driver_number"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:src="@drawable/ic_call_green" />
+
+
+    <Button
         android:id="@+id/driver_assign"
-        android:textSize="16sp"
-        android:layout_below="@+id/driver_name"
-        android:paddingRight="16dp"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="40dp"
+        android:background="@color/wallet_holo_blue_light"
+        android:padding="4dp"
         android:text="Assign Job"
-        android:layout_alignParentRight="true"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>
