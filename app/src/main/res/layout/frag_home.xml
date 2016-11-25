@@ -22,40 +22,64 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:weightSum="9">
+        android:orientation="vertical"
+        android:layout_below="@+id/toolbar">
 
-        <ImageView
+        <RelativeLayout
             android:id="@+id/glare_amb"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/sunflower"
             android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="3"
-            android:scaleType="fitEnd"
-            android:src="@drawable/ambulance"
-            tools:ignore="ContentDescription" />
+            android:layout_weight="1">
 
-        <ImageView
-            android:id="@+id/glare_pol"
+        <TextView
+            android:id="@+id/amb_text"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="3"
-            android:scaleType="centerCrop"
-            android:src="@drawable/police"
-            tools:ignore="ContentDescription" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="24sp"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:text="Ambulance Service"/>
 
-        <ImageView
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/glare_fire"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/carrot"
             android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="3"
-            android:scaleType="centerCrop"
-            android:src="@drawable/fire"
-            tools:ignore="ContentDescription" />
+            android:layout_weight="1">
+
+
+        <TextView
+            android:id="@+id/fire_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="24sp"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:text="Fire Alert"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/glare_pol"
+            android:layout_width="match_parent"
+            android:background="@color/nephritis"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+
+        <TextView
+            android:id="@+id/police_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="24sp"
+            android:padding="10dp"
+            android:textColor="@color/white"
+            android:text="Police Assistance"/>
+</RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

@@ -156,16 +156,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             PreferenceManager.getInstance(this).put(AppConstants.USER_LAT, String.valueOf(mLastLocation.getLatitude()));
             PreferenceManager.getInstance(this).put(AppConstants.USER_LON, String.valueOf(mLastLocation.getLongitude()));
             ParseGeoPoint location = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            ParseUser.getCurrentUser().put("location", location);
-            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null)
-                        Log.i("RESP", "location of driver saved");
-                    else
-                        Log.i("RESP", e.getLocalizedMessage());
-                }
-            });
+          if(ParseUser.getCurrentUser()!=null) {
+              ParseUser.getCurrentUser().put("location", location);
+              ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                  @Override
+                  public void done(ParseException e) {
+                      if (e == null)
+                          Log.i("RESP", "location of driver saved");
+                      else
+                          Log.i("RESP", e.getLocalizedMessage());
+                  }
+              });
+          }
 
         } else {
             Log.i("RESP", "NULL LOCATION ON CONNCETED");

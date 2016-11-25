@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#1ABC9C</color>
     <color name="colorPrimaryDark">#16A085</color>
-    <color name="colorAccent">#ffe100</color>
+    <color name="colorAccent">#f1c40f</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#616161</color>
 
@@ -14,5 +14,9 @@
     <color name="light_white">#ddd</color>
     <color name="red">#ff0000</color>
     <color name="green">#00aa00</color>
+
+    <color name="carrot">#e67e22</color>
+    <color name="sunflower">#f1c40f</color>
+    <color name="nephritis">#27ae60</color>
 
 </resources>
