@@ -1,7 +1,5 @@
 package com.prappz.glare.admin;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,7 +17,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
@@ -27,7 +24,6 @@ import com.prappz.glare.R;
 import com.prappz.glare.common.AppConstants;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Royce RB on 3/11/16.
@@ -101,23 +97,33 @@ public class AdminGlareListFragment extends Fragment {
         public void onBindViewHolder(GlareAdapter.Holder holder, int position) {
             holder.position = position;
             ParseObject glare = glares.get(position);
-            holder.name.setText(glare.getString("name"));
-            //   holder.phone.setText(glare.getString("phone"));
+            String gender, type;
+            if(glare.getInt("gender") == 0){
+                gender = "Male";
+            }else if(glare.getInt("gender") == 1){
+                gender = "Female";
+            }else if(glare.getInt("gender") == 2){
+                gender = "Transgender";
+            }else{
+                gender = "NA";
+            }
+
             if (glare.getInt("type") == AppConstants.GLARE_AMBULANCE)
-                holder.type.setText("Ambulance");
+                type = "Ambulance Service";
             else if (glare.getInt("type") == AppConstants.GLARE_FIRE)
-                holder.type.setText("Fire");
+                type = "Firefighting Service";
             else if (glare.getInt("type") == AppConstants.GLARE_POLICE)
-                holder.type.setText("Police");
+                type = "Police Assistance";
+            else
+                type = "Service";
+
+
+            holder.name.setText(glare.getString("name")+" requested "+type);
+            holder.type.setText("Details: "+glare.getString("info")+"\nAge: "+glare.getString("age")+" Gender: "+gender);
+            //   holder.phone.setText(glare.getString("phone"));
+
             if (glare.getParseFile("image") != null)
                 Glide.with(getContext()).load(glare.getParseFile("image").getUrl()).thumbnail(0.1f).into(holder.image);
-            if (status == 0)
-                holder.driver.setText("View Nearby Drivers");
-            else if (status == 1)
-                holder.driver.setText("Mark completed");
-            else if (status == 2)
-                holder.driver.setText("Reopen Glare");
-
         }
 
         @Override
@@ -128,82 +134,46 @@ public class AdminGlareListFragment extends Fragment {
         public class Holder extends RecyclerView.ViewHolder {
 
             int position;
-            ImageView image;
+              ImageView image; //driver;
             TextView name, type;
-            Button driver;
+            Button btnChangeStatus;
 
             private Holder(View itemView) {
                 super(itemView);
-                image = (ImageView) itemView.findViewById(R.id.glare_image);
+               image = (ImageView) itemView.findViewById(R.id.glare_image);
                 name = (TextView) itemView.findViewById(R.id.glare_name);
                 type = (TextView) itemView.findViewById(R.id.glare_type);
-                driver = (Button) itemView.findViewById(R.id.glare_nearby_drivers);
+
+
                 // status = (TextView) itemView.findViewById(R.id.glare_status);
 
-                itemView.findViewById(R.id.glare_location).setOnClickListener(new View.OnClickListener() {
+
+                itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.i("RESP", "LOCATION " + glares.get(position).getParseGeoPoint("location").toString());
-                        ParseGeoPoint geoPoint = glares.get(position).getParseGeoPoint("location");
-                        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", geoPoint.getLatitude(), geoPoint.getLongitude());
-                        Uri gmmIntentUri = Uri.parse(uri);
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                        startActivity(mapIntent);
-
+                        skipToNearbyDriversFragment(glares.get(position));
                     }
                 });
-
-                if (status == 0)
-                    driver.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Log.i("RESP", "NEARBY " + glares.get(position).getParseGeoPoint("location").toString());
-                            skipToNearbyDriversFragment(glares.get(position));
-                        }
-                    });
-                else if (status == 1)
-                    driver.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            changeStatus(glares.get(position), AppConstants.STATUS_COMPLETED);
-                        }
-                    });
-                else if (status == 2)
-                    driver.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            changeStatus(glares.get(position), AppConstants.STATUS_PENDING);
-                        }
-                    });
 
             }
         }
     }
 
-    private void changeStatus(ParseObject parseObject, int STATUS) {
-        progressBar.setVisibility(View.VISIBLE);
-        parseObject.put("status", STATUS);
-        parseObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.i("RESP", "JOb COmpelted");
-                    getData();
-                } else {
-                    Log.i("RESP", "Job not marked completed due to " + e.getLocalizedMessage());
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        });
-    }
-
     private void skipToNearbyDriversFragment(ParseObject glare) {
 
-        NearbyDriversFragment fragment = new NearbyDriversFragment();
+        GlareReportDetailsFragment fragment = new GlareReportDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putDouble("lat", glare.getParseGeoPoint("location").getLatitude());
         bundle.putDouble("lon", glare.getParseGeoPoint("location").getLongitude());
         bundle.putString("id", glare.getObjectId());
+        bundle.putInt("status",status);
+        bundle.putString("image",glare.getParseFile("image").getUrl());
+        bundle.putInt("type",glare.getInt("type"));
+        bundle.putString("info",glare.getString("info"));
+        bundle.putInt("gender",glare.getInt("gender"));
+        bundle.putString("name",glare.getString("name"));
+        bundle.putString("age",glare.getString("age"));
+
         fragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack("stack").replace(R.id.frame, fragment).commit();
     }

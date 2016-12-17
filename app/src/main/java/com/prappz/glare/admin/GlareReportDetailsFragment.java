@@ -3,6 +3,7 @@ package com.prappz.glare.admin;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,13 +15,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -39,26 +44,32 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Royce RB on 4/11/16.
  */
 
-public class NearbyDriversFragment extends Fragment {
+public class GlareReportDetailsFragment extends Fragment {
 
     private RecyclerView list;
     private List<ParseUser> users;
     private ParseGeoPoint victim;
-    private String phone;
+    private String phone,id;
     private ProgressBar progressBar;
+    private int status = 0;
 
-    public NearbyDriversFragment() {
+    private LinearLayout btnChangeStatus, btnLocation, btnCall;
+    private TextView glareReportTitle, glareReportDetails, reportStatus, glareChangeStatustText;
+    private ImageView reportImage, glareChangeStatusImage;
+
+    public GlareReportDetailsFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frag_nearby_drivers, container, false);
+        return inflater.inflate(R.layout.fragment_glare_reports_details, container, false);
     }
 
     @Override
@@ -68,9 +79,23 @@ public class NearbyDriversFragment extends Fragment {
         list = (RecyclerView) view.findViewById(R.id.list);
         progressBar = (ProgressBar) view.findViewById(R.id.progress_view);
         progressBar.setVisibility(View.VISIBLE);
+        btnChangeStatus = (LinearLayout) view.findViewById(R.id.g_change_status);
+        btnCall = (LinearLayout) view.findViewById(R.id.g_call_reporter);
+        btnLocation = (LinearLayout) view.findViewById(R.id.g_locate_victim);
+
+        glareReportDetails = (TextView) view.findViewById(R.id.glare_report_detail);
+        glareReportTitle = (TextView) view.findViewById(R.id.glare_report_title);
+        reportStatus = (TextView) view.findViewById(R.id.report_status);
+        glareChangeStatustText = (TextView) view.findViewById(R.id.glare_change_status_text);
+
+        reportImage = (ImageView) view.findViewById(R.id.glare_image);
+        glareChangeStatusImage = (ImageView) view.findViewById(R.id.glare_change_status_image);
+
         list.setLayoutManager(new LinearLayoutManager(getContext()));
 
         victim = new ParseGeoPoint(getArguments().getDouble("lat"), getArguments().getDouble("lon"));
+        status = getArguments().getInt("status");
+        id = getArguments().getString("status");
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.whereNear("location", victim);
         query.whereStartsWith("username", "d");
@@ -90,7 +115,122 @@ public class NearbyDriversFragment extends Fragment {
             }
         });
 
+        if (status == 0) {
+            glareChangeStatustText.setText("Close");
+            glareChangeStatusImage.setImageResource(R.drawable.ic_close_24dp);
+            reportStatus.setText("Status : Waiting to Assign Driver");
+            reportStatus.setTextColor(Color.RED);
+        }
+        else if (status == 1) {
+            glareChangeStatustText.setText("Mark Done");
+            reportStatus.setText("Status : Driver Assigned");
+            glareChangeStatusImage.setImageResource(R.drawable.ic_check_24dp);
+            reportStatus.setTextColor(Color.GREEN);
+        }
+        else if (status == 2) {
+            glareChangeStatustText.setText("Reopen");
+            reportStatus.setText("Status : Completed");
+            reportStatus.setTextColor(Color.CYAN);
+            glareChangeStatusImage.setImageResource(R.drawable.ic_reopen_24dp);
+        }
 
+        btnChangeStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status == 0){
+                    getobject(2);
+                }else if(status ==1){
+                    getobject(2);
+                }else if(status ==2){
+                    getobject(0);
+                }
+            }
+        });
+
+        btnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        String gender, type;
+        if(getArguments().getInt("gender") == 0){
+            gender = "Male";
+        }else if(getArguments().getInt("gender") == 1){
+            gender = "Female";
+        }else if(getArguments().getInt("gender") == 2){
+            gender = "Transgender";
+        }else{
+            gender = "NA";
+        }
+
+        if (getArguments().getInt("type") == AppConstants.GLARE_AMBULANCE)
+            type = "Ambulance Service";
+        else if (getArguments().getInt("type") == AppConstants.GLARE_FIRE)
+            type = "Firefighting Service";
+        else if (getArguments().getInt("type") == AppConstants.GLARE_POLICE)
+            type = "Police Assistance";
+        else
+            type = "Service";
+
+
+        glareReportTitle.setText(getArguments().getString("name")+" requested "+type);
+        glareReportDetails.setText("Details: "+getArguments().getString("info")+"\nAge: "+getArguments().getString("age")+" Gender: "+gender);
+        //   holder.phone.setText(glare.getString("phone"));
+
+        if (getArguments().getString("image") != null)
+            Glide.with(getContext()).load(getArguments().getString("image")).thumbnail(0.1f).into(reportImage);
+
+
+        btnLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openMap();
+            }
+        });
+    }
+
+    private void openMap() {
+        final ParseGeoPoint[] geoPoint = new ParseGeoPoint[1];
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Glare");
+        query.getInBackground(id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if(e==null&&object!=null)
+                    geoPoint[0] = object.getParseGeoPoint("location");
+                    String uri = String.format(Locale.ENGLISH, "geo:%f,%f", geoPoint[0].getLatitude(), geoPoint[0].getLongitude());
+                    Uri gmmIntentUri = Uri.parse(uri);
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    startActivity(mapIntent);
+            }
+        });
+    }
+    private void getobject(final int status) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Glare");
+        query.getInBackground(id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                if(e==null&&object!=null)
+                    changeStatus(object,status);
+            }
+        });
+    }
+
+    private void changeStatus(ParseObject parseObject, int STATUS) {
+        progressBar.setVisibility(View.VISIBLE);
+        parseObject.put("status", STATUS);
+        parseObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.i("RESP", "JOb COmpelted");
+                } else {
+                    Log.i("RESP", "Job not marked completed due to " + e.getLocalizedMessage());
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void callUser(String phone) {
@@ -130,7 +270,7 @@ public class NearbyDriversFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(NearbyDriversFragment.DriversAdapter.Holder holder, int position) {
+        public void onBindViewHolder(GlareReportDetailsFragment.DriversAdapter.Holder holder, int position) {
             holder.position = position;
             ParseUser user = users.get(position);
             holder.name.setText(user.getString("name"));

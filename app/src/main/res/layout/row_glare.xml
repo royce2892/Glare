@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="136dp"
+    android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="8dp">
 
     <ImageView
         android:id="@+id/glare_image"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:scaleType="fitXY"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/glare" />
 
     <TextView
@@ -21,44 +21,20 @@
         android:paddingLeft="16dp"
         android:text="Royce Raju"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/glare_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_above="@+id/glare_nearby_drivers"
+        android:layout_below="@+id/glare_name"
         android:layout_marginBottom="16dp"
         android:layout_toRightOf="@+id/glare_image"
         android:paddingLeft="16dp"
         android:text="Ambulance"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="italic" />
-
-    <ImageView
-        android:id="@+id/glare_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_place_primary_color" />
-
-    <Button
-        android:id="@+id/glare_nearby_drivers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/glare_image"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/glare_image"
-        android:background="@color/wallet_holo_blue_light"
-        android:padding="8dp"
-        android:text="View Nearby Drivers"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
-
 
 </RelativeLayout>
