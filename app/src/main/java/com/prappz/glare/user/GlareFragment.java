@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -34,8 +36,9 @@ import static android.app.Activity.RESULT_OK;
 public class GlareFragment extends Fragment {
 
     private ImageView mImage;
-    private EditText mInfo;
+    private EditText mInfo, mAge;
     private Bitmap bitmap;
+    private Spinner mGender;
     private ProgressBar progressBar;
 
     public GlareFragment() {
@@ -53,8 +56,11 @@ public class GlareFragment extends Fragment {
 
         mImage = (ImageView) view.findViewById(R.id.glare_pic);
         mInfo = (EditText) view.findViewById(R.id.glare_desc);
+        mAge = (EditText) view.findViewById(R.id.glare_age);
+        mGender = (Spinner) view.findViewById(R.id.glare_gender_spinner);
         progressBar = (ProgressBar) view.findViewById(R.id.progress_view);
 
+        setSpinner();
         mImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +74,14 @@ public class GlareFragment extends Fragment {
                 uploadImage();
             }
         });
+    }
+
+    private void setSpinner() {
+        String[] gender = {"Male", "Female", "Transgender"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, gender);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mGender.setAdapter(adapter);
     }
 
     private void uploadImage() {
@@ -102,6 +116,8 @@ public class GlareFragment extends Fragment {
     private void saveGlare(ParseFile file) {
         ParseObject glare = ParseObject.create("Glare");
         glare.put("info", mInfo.getText().toString());
+        glare.put("age", mAge.getText().toString());
+        glare.put("gender", mGender.getSelectedItemPosition());
         Double lat, lon;
         if (file != null)
             glare.put("image", file);

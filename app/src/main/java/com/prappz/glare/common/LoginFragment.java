@@ -107,7 +107,7 @@ public class LoginFragment extends Fragment {
                     skipToHome();
                 } else {
                     progressBar.setVisibility(View.GONE);
-                    showToast(e.getLocalizedMessage());
+                  //  showToast(e.getLocalizedMessage());
                     if (e.getCode() == ParseException.USERNAME_TAKEN)
                         loginUser();
                 }

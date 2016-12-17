@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -39,8 +40,8 @@ public class DriverHomeFragment extends Fragment implements View.OnClickListener
 
     private String id;
     private TextView name, desc;
-    private RelativeLayout driverLayout;
-    private ImageView image;
+    private Button accept, reject;
+    private ImageView image, callUser;
     private ParseObject glareObj, ambRequest;
     private ProgressBar progressBar;
 
@@ -57,11 +58,18 @@ public class DriverHomeFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        driverLayout = (RelativeLayout) view.findViewById(R.id.driver_home);
         name = (TextView) view.findViewById(R.id.glare_name);
         desc = (TextView) view.findViewById(R.id.glare_text);
         image = (ImageView) view.findViewById(R.id.glare_img);
         progressBar = (ProgressBar) view.findViewById(R.id.progress_view);
+
+        accept = (Button) view.findViewById(R.id.accept);
+        reject = (Button) view.findViewById(R.id.reject);
+        callUser = (ImageView) view.findViewById(R.id.call_user);
+
+        view.findViewById(R.id.accept).setOnClickListener(this);
+        view.findViewById(R.id.reject).setOnClickListener(this);
+        view.findViewById(R.id.call_user).setOnClickListener(this);
 
         if (getArguments() != null) {
             if (getArguments().getBoolean("FROMNOTIF", false)) {
@@ -82,14 +90,14 @@ public class DriverHomeFragment extends Fragment implements View.OnClickListener
             getRequestData();
         }
 
-        view.findViewById(R.id.accept).setOnClickListener(this);
-        view.findViewById(R.id.reject).setOnClickListener(this);
-        view.findViewById(R.id.call_user).setOnClickListener(this);
+
 
     }
 
     private void getRequestData() {
 
+        toggleViews(View.GONE);
+        //  driverLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("AmbulanceRequest");
         query.getInBackground(id, new GetCallback<ParseObject>() {
@@ -102,10 +110,20 @@ public class DriverHomeFragment extends Fragment implements View.OnClickListener
         });
     }
 
+    private void toggleViews(int visibility) {
+        image.setVisibility(visibility);
+        accept.setVisibility(visibility);
+        reject.setVisibility(visibility);
+        callUser.setVisibility(visibility);
+        name.setVisibility(visibility);
+        desc.setVisibility(visibility);
+    }
+
     private void setData(ParseObject amb) {
         ambRequest = amb;
-        Toast.makeText(getContext(), amb.getObjectId(), Toast.LENGTH_SHORT).show();
-        driverLayout.setVisibility(View.VISIBLE);
+     //   Toast.makeText(getContext(), amb.getObjectId(), Toast.LENGTH_SHORT).show();
+        toggleViews(View.VISIBLE);
+        // driverLayout.setVisibility(View.VISIBLE);
 
         final ParseQuery<ParseObject> glare = ParseQuery.getQuery("Glare");
         glare.getInBackground(amb.getString("glareId"), new GetCallback<ParseObject>() {
@@ -192,9 +210,6 @@ public class DriverHomeFragment extends Fragment implements View.OnClickListener
     }
 
     private void startMaps() {
-        /*startActivity(new Intent(getContext(), MapsActivity.class).
-                putExtra("lat", glareObj.getParseGeoPoint("location").getLatitude()).
-                putExtra("lon", glareObj.getParseGeoPoint("location").getLongitude()));*/
         final Intent intent = new
                 Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?" +
                 "saddr=" + Double.valueOf(PreferenceManager.getInstance(getContext()).getString(AppConstants.USER_LAT)) + "," +
