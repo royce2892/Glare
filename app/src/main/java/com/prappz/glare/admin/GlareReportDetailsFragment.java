@@ -125,12 +125,12 @@ public class GlareReportDetailsFragment extends Fragment {
             glareChangeStatustText.setText("Mark Done");
             reportStatus.setText("Status : Driver Assigned");
             glareChangeStatusImage.setImageResource(R.drawable.ic_check_24dp);
-            reportStatus.setTextColor(Color.GREEN);
+            reportStatus.setTextColor(getResources().getColor(R.color.colorPrimary));
         }
         else if (status == 2) {
             glareChangeStatustText.setText("Reopen");
             reportStatus.setText("Status : Completed");
-            reportStatus.setTextColor(Color.CYAN);
+            reportStatus.setTextColor(getResources().getColor(R.color.carrot));
             glareChangeStatusImage.setImageResource(R.drawable.ic_reopen_24dp);
         }
 
